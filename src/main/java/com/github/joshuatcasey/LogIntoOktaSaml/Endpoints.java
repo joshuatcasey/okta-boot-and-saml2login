@@ -5,6 +5,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class Endpoints {
+    @GetMapping("/")
+    public String index() {
+        return "home page, try \"/public\", \"/protected\", or \"/admins\"";
+    }
 
     @GetMapping("public")
     public String getPublic() {
@@ -14,5 +18,10 @@ public class Endpoints {
     @GetMapping("protected")
     public String getProtected() {
         return "protected";
+    }
+
+    @GetMapping("admins")
+    public String getAdmins() {
+        return "admins";
     }
 }

@@ -1,4 +1,17 @@
 spring:
   autoconfigure:
     exclude:
-      org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+    - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+  security:
+    saml2:
+      relyingparty:
+        authorityMapping:
+          oktaXYZ: Groups
+          okta: Groups
+        registration:
+          oktaXYZ:
+            identityprovider:
+              metadata-uri: https://dev-#######.okta.com/app/XXXXXXXXXXXXXXXXXXXX/sso/saml/metadata
+          okta:
+            identityprovider:
+              metadata-uri: https://dev-#######.okta.com/app/XXXXXXXXXXXXXXXXXXXX/sso/saml/metadata
