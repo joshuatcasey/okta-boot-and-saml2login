@@ -6,13 +6,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Endpoints {
 
-  @GetMapping("public")
-  public String getPublic() {
-    return "public";
-  }
+    @GetMapping("public")
+    public String getPublic() {
+        return "public";
+    }
 
-  @GetMapping("protected")
-  public String getProtected() {
-    return "protected";
-  }
+    @GetMapping("protected")
+    public String getProtected() {
+        return "protected";
+    }
 }

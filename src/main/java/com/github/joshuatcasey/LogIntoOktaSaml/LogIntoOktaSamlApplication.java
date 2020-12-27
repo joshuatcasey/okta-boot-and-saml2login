@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class LogIntoOktaSamlApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(LogIntoOktaSamlApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(LogIntoOktaSamlApplication.class, args);
+    }
 
 }
