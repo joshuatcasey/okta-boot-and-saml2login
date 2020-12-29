@@ -10,7 +10,7 @@ public class Saml2RelyingPartyMappings implements Saml2AuthorityAttributeLookup 
 
     private final Map<String, String> authorityMapping = new LinkedHashMap<>();
 
-    private final Map<String, Map<String, String>> identityMapping = new LinkedHashMap<>();
+    private final Map<String, SimpleScimMappings> identityMapping = new LinkedHashMap<>();
 
     @SuppressWarnings("unused")
     Map<String, String> getAuthorityMapping() {
@@ -18,7 +18,7 @@ public class Saml2RelyingPartyMappings implements Saml2AuthorityAttributeLookup 
     }
 
     @SuppressWarnings("unused")
-    Map<String, Map<String, String>> getIdentityMapping() {
+    Map<String, SimpleScimMappings> getIdentityMapping() {
         return identityMapping;
     }
 
@@ -28,8 +28,7 @@ public class Saml2RelyingPartyMappings implements Saml2AuthorityAttributeLookup 
     }
 
     @Override
-    public Map<String, String> getIdentityMappings(final String registrationId) {
+    public SimpleScimMappings getIdentityMappings(final String registrationId) {
         return this.identityMapping.get(registrationId);
     }
-
 }

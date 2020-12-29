@@ -10,30 +10,28 @@ import org.springframework.util.Assert;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 public class ScimSaml2AuthenticatedPrincipal implements AuthenticatedPrincipal {
     private final UserResource userResource;
 
-    private final Map<String, List<Object>> attributes;
-
     public ScimSaml2AuthenticatedPrincipal(
             final Assertion assertion,
             final Map<String, List<Object>> attributes,
-            final Map<String, String> attributeMappings) {
+            final SimpleScimMappings attributeMappings) {
         Assert.notNull(assertion, "assertion cannot be null");
         Assert.notNull(assertion.getSubject(), "assertion subject cannot be null");
         Assert.notNull(assertion.getSubject().getNameID(), "assertion subject NameID cannot be null");
         Assert.notNull(attributes, "attributes cannot be null");
         Assert.notNull(attributeMappings, "attributeMappings cannot be null");
-        this.attributes = attributes;
 
         final Name name = new Name()
-                .setFamilyName(getAttribute(attributes, attributeMappings, "familyName"))
-                .setGivenName(getAttribute(attributes, attributeMappings, "givenName"));
+                .setFamilyName(getAttribute(attributes, attributeMappings, SimpleScimMappings::getFamilyName))
+                .setGivenName(getAttribute(attributes, attributeMappings, SimpleScimMappings::getGivenName));
 
         final List<Email> emails = new ArrayList<>(1);
         emails.add(new Email()
-                .setValue(getAttribute(attributes, attributeMappings, "email"))
+                .setValue(getAttribute(attributes, attributeMappings, SimpleScimMappings::getEmail))
                 .setPrimary(true));
 
         userResource = new UserResource()
@@ -44,20 +42,16 @@ public class ScimSaml2AuthenticatedPrincipal implements AuthenticatedPrincipal {
 
     private static String getAttribute(
             final Map<String, List<Object>> attributes,
-            final Map<String, String> attributeMappings,
-            final String attributeName) {
+            final SimpleScimMappings simpleScimMappings,
+            final Function<SimpleScimMappings, String> attributeMapper) {
 
-        final String key = attributeMappings.get(attributeName);
-        final List<Object> objects = attributes.get(key != null ? key : attributeName);
-        if (objects == null || objects.size() < 1) {
-            return null;
-        }
+        final String key = attributeMapper.apply(simpleScimMappings);
 
-        if (objects.get(0) instanceof String) {
-            return (String) objects.get(0);
-        }
-
-        return null;
+        return new ArrayList<>(attributes.get(key)).stream()
+                .filter(String.class::isInstance)
+                .map(String.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
