@@ -21,6 +21,7 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
     testImplementation 'org.springframework.security:spring-security-test'
+    implementation 'com.unboundid.product.scim2:scim2-sdk-client:2.3.5'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 }

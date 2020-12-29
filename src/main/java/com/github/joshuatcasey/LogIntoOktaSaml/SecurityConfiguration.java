@@ -28,6 +28,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/").authenticated()
                 .antMatchers("/protected").authenticated()
+                .antMatchers("/whoami").authenticated()
                 .antMatchers("/public").permitAll()
                 .antMatchers("/admins").hasAuthority("admins")
                 .anyRequest().denyAll()

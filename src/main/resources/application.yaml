@@ -8,6 +8,15 @@ spring:
         authorityMapping:
           oktaXYZ: Groups
           okta: Groups
+        identityMapping:
+          oktaXYZ:
+            givenName: FirstName
+            familyName: LastName
+            email: Email
+          okta:
+            givenName: FirstName
+            familyName: LastName
+            email: Email
         registration:
           oktaXYZ:
             identityprovider:

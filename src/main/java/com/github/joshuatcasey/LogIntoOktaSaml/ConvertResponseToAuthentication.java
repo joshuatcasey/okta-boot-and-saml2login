@@ -31,12 +31,14 @@ public class ConvertResponseToAuthentication implements
     public Saml2Authentication convert(ResponseToken responseToken) {
         final Assertion assertion = CollectionUtils.firstElement(responseToken.getResponse().getAssertions());
         final Map<String, List<Object>> attributes = getAssertionAttributes(assertion);
-        final DefaultSaml2AuthenticatedPrincipal principal = new DefaultSaml2AuthenticatedPrincipal(
-                assertion.getSubject().getNameID().getValue(), attributes);
+        final String registrationId = responseToken.getToken().getRelyingPartyRegistration().getRegistrationId();
+        final ScimSaml2AuthenticatedPrincipal principal = new ScimSaml2AuthenticatedPrincipal(
+                assertion,
+                attributes,
+                saml2AuthorityAttributeLookup.getIdentityMappings(registrationId));
         final Collection<? extends GrantedAuthority> assertionAuthorities =
                 getAssertionAuthorities(attributes,
-                        saml2AuthorityAttributeLookup.getAuthorityAttribute(
-                                responseToken.getToken().getRelyingPartyRegistration().getRegistrationId()));
+                        saml2AuthorityAttributeLookup.getAuthorityAttribute(registrationId));
         return new Saml2Authentication(
                 principal,
                 responseToken.getToken().getSaml2Response(),
